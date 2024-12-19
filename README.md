@@ -130,7 +130,19 @@ Once the parameters are correctly configured, execute the shell script to start 
 sh train_mesorch.sh
 ```
 
-​	
+## Citation​
+If you find our work interesting or helpful, please don't hesitate to give us a star🌟 and cite our paper🥰! Your support truly encourages us!
+```bibtex
+@misc{zhu2024meso
+      title={Mesoscopic Insights: Orchestrating Multi-scale & Hybrid Architecture for Image Manipulation Localization}, 
+      author={Xuekang Zhu and Xiaochen Ma and Lei Su and Zhuohang Jiang and Bo Du and Xiwen Wang and Zeyu Lei and Wentao Feng and Chi-Man Pun and Jizhe Zhou},
+      year={2024},
+      eprint={2412.13753},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV},
+      url={https://arxiv.org/abs/2412.13753}, 
+}
+```
 
 
 
