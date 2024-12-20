@@ -1,4 +1,5 @@
-# Mesoscopic Insights: Orchestrating Multi-scale & Hybrid Architecture for Image Manipulation Localization
+Mesoscopic Insights: Orchestrating Multi-scale & Hybrid Architecture for Image Manipulation Localization
+========
 
 This repository contains the official PyTorch implementation of our AAAI2025 paper: ["Mesoscopic Insights: Orchestrating Multi-scale & Hybrid Architecture for Image Manipulation Localization"](https://arxiv.org/abs/2412.13753).
 
@@ -35,27 +36,22 @@ To use the pretrained models, download the checkpoints from the following link:
 
 The directory structure of the checkpoints is as follows:
 
-––ckpt_mesorch
+```plaintext
+Mesorch/
+├── ckpt_mesorch/
+│   └── mesorch-98.pth
+├── ckpt_mesorch_p/
+│   └── mesorch_p-118.pth
+├── extractor/
+├── .gitignore
+├── balanced_dataset.json
+├── LICENSE
+├── ...
+├── train_mesorch_p.sh
+├── train_mesorch.sh
+└── train.py
+```
 
-––––mesorch-98.pth
-
-––ckpt_mesorch_p
-
-––––mesorch_p-118.pth
-
-––extractor
-
-––balanced_dataset.json
-
-––LICENSE
-
-––mesorch.py
-
-––mesorch_p.py
-
-––README.md
-
-...
 
 ### 4. Run tests
 
@@ -70,7 +66,7 @@ sh test_mesorch_f1.sh
 #### 4.2 Permute F1
 
 ```bash
-sh test_mesorch_f1_permute_f1.sh
+sh test_mesorch_permute_f1.sh
 ```
 
 #### 4.3 Robust test
@@ -82,7 +78,7 @@ sh test_robust_mesorch.sh
 ## Training Instructions
 
 This part provides instructions on how to configure and execute the training shell script for this project.
-## 1. Segformer Pretrained File Download
+### 1. Segformer Pretrained File Download
 
 To begin the training process, you need to download the pretrained weights for Segformer. Specifically, this project uses the **mit-b3** model pretrained on ImageNet. Follow the instructions below to download it from the official Segformer GitHub repository:
 
