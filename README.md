@@ -7,8 +7,9 @@ This repository contains the official PyTorch implementation of our AAAI2025 pap
 ![Mesorch Framework](images/mesorch.png)  
 The Mesorch Framework employs a novel multi-scale parallel architecture to effectively process input images, setting a new benchmark in image manipulation localization. By leveraging distinct frequency components and feature hierarchies, it captures both local manipulations and global inconsistencies. Its adaptive weighting mechanism ensures precise and comprehensive results, making it a robust solution for image manipulation localization tasks.
 
+## Testing Instructions
 <details>
-<summary style="font-size: 30px; font-weight: bold;">Testing Instructions</summary>
+<summary><b>Click to expand</b></summary>
 
 
 
@@ -83,9 +84,9 @@ sh test_robust_mesorch.sh
 ```
 </details>
 
-
+## Training Instructions
 <details>
-<summary style="font-size: 30px; font-weight: bold;">Training Instructions</summary>
+<summary><b>Click to expand</b>></summary>
 
 
 This part provides instructions on how to configure and execute the training shell script for this project.
