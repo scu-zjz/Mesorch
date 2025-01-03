@@ -3,14 +3,21 @@ Mesoscopic Insights: Orchestrating Multi-scale & Hybrid Architecture for Image M
 
 This repository contains the official PyTorch implementation of our AAAI2025 paper: ["Mesoscopic Insights: Orchestrating Multi-scale & Hybrid Architecture for Image Manipulation Localization"](https://arxiv.org/abs/2412.13753).
 
-## Test
+
+![Mesorch Framework](images/mesorch.png)  
+The Mesorch Framework employs a novel multi-scale parallel architecture to effectively process input images, setting a new benchmark in image manipulation localization. By leveraging distinct frequency components and feature hierarchies, it captures both local manipulations and global inconsistencies. Its adaptive weighting mechanism ensures precise and comprehensive results, making it a robust solution for image manipulation localization tasks.
+
+<details>
+<summary style="font-size: 30px; font-weight: bold;">Testing Instructions</summary>
+
+
 
 This document provides step-by-step instructions for setting up the environment for the project, ensuring compatibility and successful installation of required dependencies.
 
 ### 1. Clone Project
 
 ```bash
-git@github.com:scu-zjz/Mesorch.git
+git clone git@github.com:scu-zjz/Mesorch.git
 ```
 
 ### 2. Create and Activate Conda Virtual Environment
@@ -74,8 +81,12 @@ sh test_mesorch_permute_f1.sh
 ```bash
 sh test_robust_mesorch.sh
 ```
+</details>
 
-## Training Instructions
+
+<details>
+<summary style="font-size: 30px; font-weight: bold;">Training Instructions</summary>
+
 
 This part provides instructions on how to configure and execute the training shell script for this project.
 ### 1. Segformer Pretrained File Download
@@ -87,7 +98,7 @@ To begin the training process, you need to download the pretrained weights for S
 2. Navigate to the **"Training"** section in the repository's README or directly access the download link provided for the **mit-b3** model.
 
 3. Download the pretrained weights for **mit-b3**.
- 
+
 ### 2. Configure Parameters
 
 To start the training process, you need to execute the provided `.sh` shell script file. Before running the script, ensure that key parameters such as `seg_pretrain_path`, `data_path`, and `test_data_path` are properly configured.
@@ -126,7 +137,9 @@ Once the parameters are correctly configured, execute the shell script to start 
 sh train_mesorch.sh
 ```
 
-## Citation​
+</details>
+
+## Citation
 If you find our work interesting or helpful, please don't hesitate to give us a star🌟 and cite our paper🥰! Your support truly encourages us!
 ```bibtex
 @misc{zhu2024meso
