@@ -147,6 +147,12 @@ Once the parameters are correctly configured, execute the shell script to start 
 sh train_mesorch.sh
 ```
 
+**Note:** If you experience connectivity issues with Huggingface, you can set the following environment variable to use an alternative endpoint:
+
+```bash
+export HF_ENDPOINT="https://hf-mirror.com"
+```
+
 </details>
 
 ## Citation
