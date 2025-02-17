@@ -232,16 +232,13 @@ class OverlapPatchEmbed(nn.Module):
 class UpsampleConcatConvSegformer(nn.Module):
     def __init__(self):
         super(UpsampleConcatConvSegformer, self).__init__()
-        # 192到96的上采样，单次上采样
         self.upsample1 = nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1)
 
-        # 384到96的上采样，两次上采样，逐步降低通道数
         self.upsample2 = nn.Sequential(
             nn.ConvTranspose2d(320, 128, kernel_size=4, stride=2, padding=1),
             nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1)
         )
 
-        # 768到96的上采样，三次上采样，逐步降低通道数
         self.upsample3 = nn.Sequential(
             nn.ConvTranspose2d(512, 320, kernel_size=4, stride=2, padding=1),
             nn.ConvTranspose2d(320, 128, kernel_size=4, stride=2, padding=1),
@@ -261,12 +258,7 @@ class UpsampleConcatConvSegformer(nn.Module):
 
 
 
-# class mit_b3(MixVisionTransformer):
-#     def __init__(self, **kwargs):
-#         super(mit_b3, self).__init__(
-#             patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[4, 4, 4, 4],
-#             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[3, 4, 18, 3], sr_ratios=[8, 4, 2, 1],
-#             drop_rate=0.0, drop_path_rate=0.1)
+
 class MixVisionTransformer(nn.Module):
     def __init__(self,pretrain_path=None, img_size=512, patch_size=4, in_chans=3,embed_dims=[64, 128, 320, 512],num_heads=[1, 2, 5, 8], mlp_ratios=[4, 4, 4, 4], qkv_bias=True, qk_scale=None, drop_rate=0.0,
                  attn_drop_rate=0., drop_path_rate=0.1, norm_layer=partial(nn.LayerNorm, eps=1e-6),
@@ -408,10 +400,10 @@ import torch.nn.functional as F
 class UpsampleConcatConv(nn.Module):
     def __init__(self):
         super(UpsampleConcatConv, self).__init__()
-        # 192到96的上采样，单次上采样
         self.upsamplec2 = nn.ConvTranspose2d(192, 96, kernel_size=4, stride=2, padding=1)
+
         self.upsamples2 = nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1)
-        # 384到96的上采样，两次上采样，逐步降低通道数
+
         self.upsamplec3 = nn.Sequential(
             nn.ConvTranspose2d(384, 192, kernel_size=4, stride=2, padding=1),
             nn.ConvTranspose2d(192, 96, kernel_size=4, stride=2, padding=1)
@@ -421,7 +413,6 @@ class UpsampleConcatConv(nn.Module):
             nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1)
         )
 
-        # 768到96的上采样，三次上采样，逐步降低通道数
         self.upsamplec4 = nn.Sequential(
             nn.ConvTranspose2d(768, 384, kernel_size=4, stride=2, padding=1),
             nn.ConvTranspose2d(384, 192, kernel_size=4, stride=2, padding=1),
@@ -445,15 +436,8 @@ class UpsampleConcatConv(nn.Module):
         s3 = self.upsamples3(s3)
         s4 = self.upsamples4(s4)
         
-        # 拼接四个tensor
         x = torch.cat([c1,c2,c3,c4,s1,s2,s3,s4 ], dim=1)
         features = [c1,c2,c3,c4,s1,s2,s3,s4]
-        # shortcut = x
-        # x = x.permute(0, 2, 3, 1)
-        # x = self.fc2(self.act(self.fc1(x)))
-        # x = x.permute(0, 3, 1, 2)
-        # x = x + shortcut
-        # 1x1卷积
         return x, features
 
 class LayerNorm2d(nn.LayerNorm):
@@ -492,18 +476,16 @@ class ScoreNetwork(nn.Module):
 
 @MODELS.register_module()
 class Mesorch(nn.Module):
-    def __init__(self, seg_pretrain_path=None, conv_pretrain=False):
+    def __init__(self, seg_pretrain_path=None, conv_pretrain=False, image_size = 512):
         super(Mesorch, self).__init__()
         self.convnext = ConvNeXt(conv_pretrain)
         self.segformer = MixVisionTransformer(seg_pretrain_path)
         self.upsample = UpsampleConcatConv()
         self.low_dct = LowDctFrequencyExtractor()
         self.high_dct = HighDctFrequencyExtractor()
-        # 使用1x1的卷积将4个192通道合并为1通道
         self.inverse = nn.ModuleList([nn.Conv2d(96, 1, 1) for _ in range(4)]+[nn.Conv2d(64, 1, 1) for _ in range(4)])
         self.gate = ScoreNetwork()
-        # 最后调整到512x512大小
-        self.resize = nn.Upsample(size=(512, 512), mode='bilinear', align_corners=True)
+        self.resize = nn.Upsample(size=(image_size, image_size), mode='bilinear', align_corners=True)
         self.loss_fn = nn.BCEWithLogitsLoss()
     def forward(self, image, mask, *args, **kwargs):
         high_freq = self.high_dct(image)
@@ -515,7 +497,6 @@ class Mesorch(nn.Module):
         _,outs2 = self.segformer(input_low)
 
         inputs = outs1 + outs2
-        # inputs = [torch.concat([outs1[i],outs2[i]],dim=1) for i in range(len(outs1))]
         x, features = self.upsample(inputs)
         gate_outputs = self.gate(input_all)
 

@@ -261,12 +261,7 @@ class UpsampleConcatConvSegformer(nn.Module):
 
 
 
-# class mit_b3(MixVisionTransformer):
-#     def __init__(self, **kwargs):
-#         super(mit_b3, self).__init__(
-#             patch_size=4, embed_dims=[64, 128, 320, 512], num_heads=[1, 2, 5, 8], mlp_ratios=[4, 4, 4, 4],
-#             qkv_bias=True, norm_layer=partial(nn.LayerNorm, eps=1e-6), depths=[3, 4, 18, 3], sr_ratios=[8, 4, 2, 1],
-#             drop_rate=0.0, drop_path_rate=0.1)
+
 class MixVisionTransformer(nn.Module):
     def __init__(self,seg_pretrain_path=None, img_size=512, patch_size=4, in_chans=3,embed_dims=[64, 128, 320, 512],num_heads=[1, 2, 5, 8], mlp_ratios=[4, 4, 4, 4], qkv_bias=True, qk_scale=None, drop_rate=0.0,
                  attn_drop_rate=0., drop_path_rate=0.1, norm_layer=partial(nn.LayerNorm, eps=1e-6),
@@ -407,10 +402,8 @@ import torch.nn.functional as F
 class UpsampleConcatConv(nn.Module):
     def __init__(self):
         super(UpsampleConcatConv, self).__init__()
-        # 192到96的上采样，单次上采样
-        # self.upsamplec2 = nn.ConvTranspose2d(192, 96, kernel_size=4, stride=2, padding=1)
         self.upsamples2 = nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1)
-        # 384到96的上采样，两次上采样，逐步降低通道数
+
         self.upsamplec3 = nn.Sequential(
             nn.ConvTranspose2d(384, 192, kernel_size=4, stride=2, padding=1),
             nn.ConvTranspose2d(192, 96, kernel_size=4, stride=2, padding=1)
@@ -420,12 +413,7 @@ class UpsampleConcatConv(nn.Module):
             nn.ConvTranspose2d(128, 64, kernel_size=4, stride=2, padding=1)
         )
 
-        # 768到96的上采样，三次上采样，逐步降低通道数
-        # self.upsamplec4 = nn.Sequential(
-        #     nn.ConvTranspose2d(768, 384, kernel_size=4, stride=2, padding=1),
-        #     nn.ConvTranspose2d(384, 192, kernel_size=4, stride=2, padding=1),
-        #     nn.ConvTranspose2d(192, 96, kernel_size=4, stride=2, padding=1)
-        # )
+
         self.upsamples4 = nn.Sequential(
             nn.ConvTranspose2d(512, 320, kernel_size=4, stride=2, padding=1),
             nn.ConvTranspose2d(320, 128, kernel_size=4, stride=2, padding=1),
@@ -491,17 +479,15 @@ class ScoreNetwork(nn.Module):
 
 @MODELS.register_module()
 class Mesorch_P(nn.Module):
-    def __init__(self, seg_pretrain_path, conv_pretrain=False):
+    def __init__(self, seg_pretrain_path, conv_pretrain=False, image_size=512):
         super(Mesorch_P, self).__init__()
         self.convnext = ConvNeXt(conv_pretrain)
         self.segformer = MixVisionTransformer(seg_pretrain_path)
         self.upsample = UpsampleConcatConv()
         self.low_dct = LowDctFrequencyExtractor()
         self.high_dct = HighDctFrequencyExtractor()
-        # 使用1x1的卷积将4个192通道合并为1通道
         self.inverse = nn.ModuleList([nn.Conv2d(96, 1, 1) for _ in range(2)]+[nn.Conv2d(64, 1, 1) for _ in range(3)])
-        # 最后调整到512x512大小
-        self.resize = nn.Upsample(size=(512, 512), mode='bilinear', align_corners=True)
+        self.resize = nn.Upsample(size=(image_size, image_size), mode='bilinear', align_corners=True)
         self.loss_fn = nn.BCEWithLogitsLoss()
     def forward(self, image, mask, *args, **kwargs):
         high_freq = self.high_dct(image)
