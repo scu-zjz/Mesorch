@@ -168,6 +168,8 @@ If you find our work interesting or helpful, please don't hesitate to give us a 
       url={https://arxiv.org/abs/2412.13753}, 
 }
 ```
+## Star History
 
+[![Star History Chart](https://api.star-history.com/svg?repos=scu-zjz/mesorch&type=Date)](https://www.star-history.com/#scu-zjz/mesorch&Date)
 
 
