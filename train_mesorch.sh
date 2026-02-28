@@ -7,9 +7,9 @@ torchrun  \
     --nnodes=1     \
     --nproc_per_node=4 \
 ./train.py \
-    --model Mesorch \
+    --model MesorchFull \
     --conv_pretrain True \
-    --seg_pretrain_path "/mnt/data0/xuekang/workspace/segformer/mit_b3.pth" \
+    --seg_pretrain_path "/mnt/data0/xuekang/workspace/convswin/mit_b3.pth" \
     --world_size 4 \
     --find_unused_parameters \
     --batch_size 12 \

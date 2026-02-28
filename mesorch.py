@@ -475,9 +475,9 @@ class ScoreNetwork(nn.Module):
 
 
 @MODELS.register_module()
-class Mesorch(nn.Module):
+class MesorchFull(nn.Module):
     def __init__(self, seg_pretrain_path=None, conv_pretrain=False, image_size = 512):
-        super(Mesorch, self).__init__()
+        super(MesorchFull, self).__init__()
         self.convnext = ConvNeXt(conv_pretrain)
         self.segformer = MixVisionTransformer(seg_pretrain_path)
         self.upsample = UpsampleConcatConv()
