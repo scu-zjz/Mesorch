@@ -16,6 +16,10 @@ For any dataset-related issues or additional resources, please refer to the repo
 
 Below are the testing and training details for Mesorch based on this repository.
 
+## News
+
+- **[2026.06]** Our latest work, **[RITA](https://github.com/scu-zjz/RITA)**, has been accepted by **CVPR 2026 Findings**. It introduces an autoregressive framework for image manipulation localization under realistic manipulation scenarios.
+
 ## Testing Instructions
 <details>
 <summary><b>Click to expand</b></summary>
