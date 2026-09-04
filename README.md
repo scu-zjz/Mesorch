@@ -18,7 +18,7 @@ Below are the testing and training details for Mesorch based on this repository.
 
 ## News
 
-- **[2026.08]** **Blog**: [分久必合：统一的伪造图像检测（Unified FID）](https://knightzjz.github.io/blog/unified-fid.html) / [Long Divided, Must Unite](https://knightzjz.github.io/blog/unified-fid-en.html) — an introduction to the Unified Fake Image Detection task and the discussion on why this task matters, and where the field is heading.
+- **[2026.08]** **Blog**: [分久必合：统一的伪造图像检测（Unified FID）](https://knightzjz.github.io/blog/unified-fid.html) / [Long Divided, Shall Unite](https://knightzjz.github.io/blog/unified-fid-en.html) — an introduction to the Unified Fake Image Detection task and the discussion on why this task matters, and where the field is heading.
 
 - **[2026.06]** Our latest work, **[RITA](https://github.com/scu-zjz/RITA)**, has been accepted by **CVPR 2026 Findings**. It introduces an autoregressive framework for image manipulation localization under realistic manipulation scenarios.
 
